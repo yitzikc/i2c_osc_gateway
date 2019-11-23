@@ -14,7 +14,6 @@ The I2COscDispatcher class in i2c_osc_dispatcher.py acts as a wrapper around the
 
 See below examples/blocking_gateway.py for simple usage of both classes.
 
-
 ## Protocols
 
 ### OSC Topics
@@ -22,14 +21,14 @@ See below examples/blocking_gateway.py for simple usage of both classes.
 The OSC topics are in the format devices/_Device class_/_Device number_/_Function_
 _Device class_, _Device number_, and _Function_ are specified by the user.
 
-### I2C Bus Addressed
+### I2C Bus Addresses
 
 I2C Bus addressed comprise the address to which the device responds on the bus, and a base address in its logical
 memory space.
 
 Every write will be of 8 bytes:
 
-## Message format
+## Message format
 
 Messages are 8 bytes long in total.
 
