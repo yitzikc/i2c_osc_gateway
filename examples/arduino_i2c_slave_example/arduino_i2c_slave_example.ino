@@ -6,26 +6,14 @@
   DroneBot Workshop 2019
   https://dronebotworkshop.com
 */
- 
+
+// TODO: Move common code to C++ file. see: https://arduino.stackexchange.com/questions/61634/multiple-ino-files-in-the-same-sketch
+
+
 // Include the Wire library for I2C
 #include <Wire.h>
 
-struct I2CMesssage {
-  union {
-    int32_t value = 0;
-    unsigned char value_bytes[4];
-  };
-  unsigned char time_spec[4] {};
-
-  void DebugPrint() const
-  {
-    Serial.print(value, HEX);
-    Serial.print(" = ");
-    Serial.print(value);
-  }
-};
-
-static_assert(sizeof(I2CMesssage) == 8, "Unexpected message size");
+#include "I2CTimedMessage.h"
  
 // LED on pin 13
 enum PinAssignments {
@@ -63,16 +51,8 @@ void receiveEvent(int howMany) {
   }
 
   const uint8_t function_addr = Wire.read();
-  I2CMesssage message {};
-
-  // Note: the loop below assumed little-endian
-  for (int i = 0; (i < 4) && Wire.available(); ++i) {
-    message.value_bytes[i] = Wire.read();
-  }
-
-  for (int i = 0; (i < 4) && Wire.available(); ++i) {
-    message.time_spec[i] = Wire.read();
-  }
+  I2CTimedMesssage message {};
+  message.ReceiveFromWire();
   
   Serial.print("Got message to function ");
   Serial.print(function_addr);
