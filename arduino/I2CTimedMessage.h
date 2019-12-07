@@ -6,11 +6,13 @@
 struct I2CTimedMesssage {
   union {
     int32_t value = 0;
-    unsigned char value_bytes[4];
+    byte value_bytes[4];
   };
   unsigned char time_spec[4] {};
 
   void ReceiveFromWire();
+
+  void SendToWire();
 
   void DebugPrint() const;
 };

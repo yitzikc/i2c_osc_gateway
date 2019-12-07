@@ -25,7 +25,7 @@ void setup() {
   Wire.begin(0x08);
   
   // Call receiveEvent when data received
-  // Wire.onRequest(onReq);
+  Wire.onRequest(onReq);
   Wire.onReceive(receiveEvent);
 
   Serial.begin(115200);
@@ -36,13 +36,19 @@ void setup() {
   digitalWrite(ledPin, LOW);
 }
 
-/*void onReq()
+static byte function_addr = -1;
+static I2CTimedMesssage message {};
+
+void onReq()
 {
-  Serial.print("ISR Request");
+  message.SendToWire();
+  Serial.print("Responding to function 0x");
+  Serial.print(function_addr, HEX);
+  Serial.print(" ");
+  message.DebugPrint();
+  Serial.println("");
   return;
 }
-*/
-
 
 // Function that executes whenever data is received from master
 void receiveEvent(int howMany) {
@@ -50,13 +56,12 @@ void receiveEvent(int howMany) {
     return;
   }
 
-  const uint8_t function_addr = Wire.read();
-  I2CTimedMesssage message {};
-  message.ReceiveFromWire();
+  function_addr  = Wire.read();
   
-  Serial.print("Got message to function ");
-  Serial.print(function_addr);
-  Serial.print(" value: 0x");
+  message.ReceiveFromWire();
+  Serial.print("Got message to function 0x");
+  Serial.print(function_addr, HEX);
+  Serial.print(" value: ");
   message.DebugPrint();
   Serial.println("");
   return;

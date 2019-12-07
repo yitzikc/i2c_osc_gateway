@@ -6,6 +6,7 @@
 
 void I2CTimedMesssage::DebugPrint() const
 {
+  Serial.print("0x");
   Serial.print(value, HEX);
   Serial.print(" = ");
   Serial.print(value);
@@ -23,4 +24,9 @@ void I2CTimedMesssage::ReceiveFromWire()
   }
 
   return;
+}
+
+void I2CTimedMesssage::SendToWire()
+{
+  Wire.write(value_bytes, sizeof(value_bytes));
 }
