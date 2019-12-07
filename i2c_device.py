@@ -51,7 +51,7 @@ class I2CDevice:
                 logging.info("Wrote to device %s value %d (0x%x) for time %d f%d",
                     topic, value, int(value), total_secs, frame)
             except OSError:
-                logger.error("Unable to write to I2C device %d", self.i2c_addr)
+                logger.error("Unable to write to I2C device 0x%x (%d)", self.i2c_addr, self.i2c_addr)
 
         if args:
             logging.warning("Ignoring unknown args: %s", args)
