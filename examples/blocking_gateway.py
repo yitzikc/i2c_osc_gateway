@@ -23,7 +23,7 @@ import i2c_osc_dispatcher
 # TODO: Specify devices in a data file, or perhaps even by probing the I2C bus
 
 devices = [
-    i2c_device.I2CDevice("light", 1, "rgb", 0x08, 0x100)
+    i2c_device.I2CDevice("light", 1, "rgb", 0x08, 0x50)
 ]
 
 def main():
