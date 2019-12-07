@@ -56,6 +56,17 @@ class I2CDevice:
         if args:
             logging.warning("Ignoring unknown args: %s", args)
 
+    def read(self, topic = None):
+        if self.is_connected:
+            try:
+                result = self.i2c.read_i2c_block_data(self.i2c_addr, self.function_addr, 4)
+                as_bytes = "".join(map(chr, result)).encode()
+                return struct.Struct("<i").unpack(as_bytes)
+            except OSError:
+                logger.error("Unable to read from I2C device 0x%x (%d)", self.i2c_addr, self.i2c_addr)
+
+        return None
+
     @property
     def is_connected(self):
         return self.i2c is not None
