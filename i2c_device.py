@@ -56,10 +56,14 @@ class I2CDevice:
         if args:
             logging.warning("Ignoring unknown args: %s", args)
 
-    def read(self, topic = None):
+    def read(self, topic=None):
         if self.is_connected:
             try:
                 result = self.i2c.read_i2c_block_data(self.i2c_addr, self.function_addr, 4)
+                # Ensure we have no superfluous bytes
+                del result[4:]
+                # Pad the read result to lenght 4
+                result.extend([0] * (4 - len(result)))
                 as_bytes = "".join(map(chr, result)).encode()
                 return struct.Struct("<i").unpack(as_bytes)
             except OSError:
